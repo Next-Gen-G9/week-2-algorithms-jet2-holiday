@@ -62,6 +62,18 @@ void addBook(std::vector<Book>& books) {
     // 5. Set the book's 'isAvailable' status to true.
     // 6. Add the new book object to the 'books' vector using push_back().
     // 7. Print a confirmation message.
+    Book newBook;
+    newBook.id = books.size() + 1;
+    std::cout << "Enter title: "; 
+    std::getline(std::cin, newBook.title);
+    std::cout << "Enter author: ";
+    std::getline(std::cin, newBook.author);
+    bool isAvailable = true;
+    newBook.isAvailable = isAvailable;
+    books.push_back(newBook);
+    std::cout << "Book added successfully: " << newBook.title << " by " << newBook.author << std::endl;
+
+
 }
 
 // STUDENT TASK: Implement the displayAllBooks function.
