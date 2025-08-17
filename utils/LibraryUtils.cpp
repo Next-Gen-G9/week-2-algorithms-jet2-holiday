@@ -116,6 +116,20 @@ void checkOutBook(std::vector<Book>& books) {
     // 4. If it's a valid pointer, check if the book 'isAvailable'.
     // 5. If it is available, set its 'isAvailable' status to false (Hint: use -> or (*). ).
     // 6. Print confirmation or error messages for each case (not found, already checked out, success).
+    int book_id;
+    std::cout << "Id of the book to check out: ";
+    std::cin >> book_id;
+    Book* bookptr = findBookById(books , book_id);
+    if (bookptr == nullptr){
+        std::cout << "Book not found.\n";
+    }
+    if (bookptr->isAvailable){
+        bookptr->isAvailable = false;
+        std::cout << "Book \"" << bookptr->title << "\" has checked out successfully.\n";
+    }
+    else{
+        std::cout << "Book \"" << bookptr->title << "\" is already checked out.\n";
+    }
 }
 
 
