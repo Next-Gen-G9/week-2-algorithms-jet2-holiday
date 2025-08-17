@@ -99,6 +99,11 @@ Book* findBookById(std::vector<Book>& books, int id) {
     // 2. Inside the loop, check if the 'id' of the current book matches the 'id' parameter.
     // 3. If it matches, return the memory address of that book object. (Hint: use the '&' operator).
     // 4. If the loop finishes and no book is found, return 'nullptr'.
+    for (auto& book : books){
+        if (book.id == id){
+            return &book;
+        }
+    }
     return nullptr; // Placeholder
 }
 
