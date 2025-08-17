@@ -53,6 +53,7 @@ std::vector<Book> loadBooks() {
 
 // STUDENT TASK: Implement the addBook function.
 // This exercise covers: functions, std::vector, std::string
+//thida
 void addBook(std::vector<Book>& books) {
     // 1. Create a new 'Book' object.
     // 2. Set its 'id'. A simple way is to use the current size of the vector: books.size() + 1.
@@ -61,6 +62,18 @@ void addBook(std::vector<Book>& books) {
     // 5. Set the book's 'isAvailable' status to true.
     // 6. Add the new book object to the 'books' vector using push_back().
     // 7. Print a confirmation message.
+    Book newBook;
+    newBook.id = books.size() + 1;
+    std::cout << "Enter title: "; 
+    std::getline(std::cin, newBook.title);
+    std::cout << "Enter author: ";
+    std::getline(std::cin, newBook.author);
+    bool isAvailable = true;
+    newBook.isAvailable = isAvailable;
+    books.push_back(newBook);
+    std::cout << "Book added successfully: " << newBook.title << " by " << newBook.author << std::endl;
+
+
 }
 
 // STUDENT TASK: Implement the displayAllBooks function.
@@ -69,15 +82,28 @@ void displayAllBooks(const std::vector<Book>& books) {
     // 1. Print a formatted header for the book list.
     // 2. Create a loop that iterates through the entire 'books' vector.
     // 3. Inside the loop, print the details of each book (id, title, author, availability).
+    std::cout << "ID\tTitle\tAuthor\tAvailable" << std::endl;
+    for (const auto& book : books) {
+        std::cout << book.id << "\t" 
+                  << book.title << "\t" 
+                  << book.author << "\t" 
+                  << (book.isAvailable ? "Yes" : "No") << std::endl;
+    }
 }
 
 // STUDENT TASK: Implement findBookById to return a pointer.
 // This exercise covers: functions, pointers (&)
+//nich
 Book* findBookById(std::vector<Book>& books, int id) {
     // 1. Create a loop to iterate through the 'books' vector.
     // 2. Inside the loop, check if the 'id' of the current book matches the 'id' parameter.
     // 3. If it matches, return the memory address of that book object. (Hint: use the '&' operator).
     // 4. If the loop finishes and no book is found, return 'nullptr'.
+    for (auto& book : books){
+        if (book.id == id){
+            return &book;
+        }
+    }
     return nullptr; // Placeholder
 }
 
@@ -90,7 +116,22 @@ void checkOutBook(std::vector<Book>& books) {
     // 4. If it's a valid pointer, check if the book 'isAvailable'.
     // 5. If it is available, set its 'isAvailable' status to false (Hint: use -> or (*). ).
     // 6. Print confirmation or error messages for each case (not found, already checked out, success).
+    int book_id;
+    std::cout << "Id of the book to check out: ";
+    std::cin >> book_id;
+    Book* bookptr = findBookById(books , book_id);
+    if (bookptr == nullptr){
+        std::cout << "Book not found.\n";
+    }
+    if (bookptr->isAvailable){
+        bookptr->isAvailable = false;
+        std::cout << "Book \"" << bookptr->title << "\" has checked out successfully.\n";
+    }
+    else{
+        std::cout << "Book \"" << bookptr->title << "\" is already checked out.\n";
+    }
 }
+
 
 // STUDENT TASK: Implement returnBook (similar to checkOutBook).
 // This exercise covers: functions, pointers (*)
@@ -101,6 +142,26 @@ void returnBook(std::vector<Book>& books) {
     // 4. If valid, check if the book is NOT available.
     // 5. If it's not available, set 'isAvailable' to true.
     // 6. Print confirmation or error messages.
+    int id_return;
+    std::cout<<"Enter the book ID to return: ";
+    std::cin>>id_return;
+    Book* search_book = findBookById(books,id_return);
+    if (search_book == nullptr)
+    {
+        std::cout<<"Not found!"<<std::endl;
+        return;
+    }
+    else{
+        // check if the book is not available change it to ture
+        if (!search_book->isAvailable)
+        {
+            search_book->isAvailable = true;
+            std::cout<<"The book title \""<<search_book->title<<"\" has return."<<std::endl;
+        }
+        else{
+            std::cout<<"The book is available not borrow yet."<<std::endl;
+        }
+    }
 }
 
 // STUDENT TASK: Implement the Bubble Sort algorithm.
@@ -113,6 +174,17 @@ void sortBooksByTitle(std::vector<Book>& books) {
     // 3. Inside the inner loop, compare the 'title' of book[j] with book[j+1].
     // 4. If book[j].title is greater than book[j+1].title, swap the two elements. (Hint: std::swap is useful here).
     // 5. After the loops complete, print a confirmation message.
+    int num_book = books.size();
+    for (int i = 0; i < num_book - 1; ++i){
+        for (int j = 0; j < num_book-1-i; ++j)
+        {
+            if (books[j].title > books[j+1].title)
+            {
+                std::swap(books[j], books[j+1]);
+            }
+        }
+    }
+    std::cout<<"The books have been sorted successfully."<<std::endl;
 }
 
 // STUDENT TASK: Implement the Binary Search algorithm.
@@ -128,4 +200,37 @@ void binarySearchByTitle(const std::vector<Book>& books) {
     //    - If the mid book's title is less than the search term, set 'low = mid + 1'.
     //    - Otherwise, set 'high = mid - 1'.
     // 6. If the loop finishes without finding the book, print a "not found" message.
+
+    std::cin.ignore();
+    std::string title_search;
+    std::cout<<"Title to find: ";
+    getline(std::cin, title_search);
+
+    int low = 0;
+    int high = books.size() - 1;
+    while (low<=high)
+    {
+        int mid = low + (high - low)/2;
+    // int id;                
+    // std::string title;    
+    // std::string author;   
+    // bool isAvailable;     
+
+        
+        if (books[mid].title == title_search)
+        {
+            std::cout<<"ID : "<<books[mid].id<<std::endl;
+            std::cout<<"Title : "<<books[mid].title<<std::endl;
+            std::cout<<"Author : "<<books[mid].author<<std::endl;
+            std::cout<<"Is Available : "<<books[mid].isAvailable<<std::endl;
+            return;
+        }
+        else if(books[mid].title < title_search)
+            low = mid + 1;
+        else
+            high = mid - 1;
+    }
+
+    std::cout<<"Not found"<<std::endl;
+    
 }
